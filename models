@@ -63,7 +63,7 @@ X_test = scaler.transform(X_test)
 Scales your features to standard normal distribution (mean = 0, std = 1)
 
 Especially important for SVM and KNN (sensitive to scale)
-
+=-------------------------------------------------------------------
 🔍 1. Random Forest
 
 rf_model = RandomForestClassifier()
@@ -78,7 +78,7 @@ Creates and trains the Random Forest model
 Builds many decision trees
 
 Takes majority vote for final classification
-
+----------------------------------------------------------------------
 🔍 2. SVM (Support Vector Machine)
 
 svm_model = SVC()
@@ -91,7 +91,7 @@ Finds the best hyperplane to separate classes
 📌 Internally:
 
 Uses kernel tricks (RBF by default) to map data to higher dimensions
-
+---------------------------------------------------------------------------
 🔍 3. K-Nearest Neighbors
 
 knn_model = KNeighborsClassifier()
@@ -104,7 +104,7 @@ For each test sample, it looks at K nearest points and takes the majority label
 📌 Internally:
 
 Uses Euclidean distance to find “neighbors”
-
+----------------------------------------------------------------------------------------
 🔍 4. XGBoost
 
 xgb_model = XGBClassifier(use_label_encoder=False, eval_metric='logloss')
@@ -139,7 +139,7 @@ print("XGBoost Accuracy:", xgb_acc, "F1 Score:", xgb_f1)
 Compares the performance of all 4 models
 
 You can then decide which is best for your final report or deployment
-
+---------------------------------------------------------------------------------------------
 All the models you trained are supervised machine learning classifiers. That means:
 
 You give them labeled data (features and a label like "malicious" or "benign").
