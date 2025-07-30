@@ -1,0 +1,142 @@
+You trained and evaluated four models:
+
+Random Forest
+
+Support Vector Machine (SVM)
+
+K-Nearest Neighbors (KNN)
+
+XGBoost
+
+Now I’ll explain the code along with what each part does, and how it relates to each model in your cybersecurity classification task.
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score, f1_score
+🔹 What this does:
+
+Imports necessary libraries:
+
+pandas for handling data
+
+train_test_split to divide dataset into train and test
+
+StandardScaler to normalize features
+
+4 models: RandomForest, SVM, KNN, XGBoost
+
+Metrics: Accuracy and F1 score for evaluation
+
+--------------------------------------------------------------------------------
+data = pd.read_csv('/content/drive/MyDrive/dataset.csv')
+X = data.drop('label', axis=1)
+y = data['label']
+🔹 What this does:
+Loads your cybersecurity dataset from CSV.
+
+X = features (like packet size, IP address, etc.)
+
+y = target labels (like "malicious", "benign", or attack categories)
+------------------------------------------------------------------------------
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+🔹 What this does:
+
+Splits the dataset:
+
+80% for training
+
+20% for testing
+
+random_state=42 ensures reproducibility
+
+-----------------------------------------------------------------------------------------------------------
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+🔹 What this does:
+
+Scales your features to standard normal distribution (mean = 0, std = 1)
+
+Especially important for SVM and KNN (sensitive to scale)
+
+🔍 1. Random Forest
+
+rf_model = RandomForestClassifier()
+rf_model.fit(X_train, y_train)
+rf_preds = rf_model.predict(X_test)
+Creates and trains the Random Forest model
+
+.predict() applies the model on test data
+
+📌 Internally:
+
+Builds many decision trees
+
+Takes majority vote for final classification
+
+🔍 2. SVM (Support Vector Machine)
+
+svm_model = SVC()
+svm_model.fit(X_train, y_train)
+svm_preds = svm_model.predict(X_test)
+Trains the SVM model
+
+Finds the best hyperplane to separate classes
+
+📌 Internally:
+
+Uses kernel tricks (RBF by default) to map data to higher dimensions
+
+🔍 3. K-Nearest Neighbors
+
+knn_model = KNeighborsClassifier()
+knn_model.fit(X_train, y_train)
+knn_preds = knn_model.predict(X_test)
+Trains KNN (lazy learner)
+
+For each test sample, it looks at K nearest points and takes the majority label
+
+📌 Internally:
+
+Uses Euclidean distance to find “neighbors”
+
+🔍 4. XGBoost
+
+xgb_model = XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+xgb_model.fit(X_train, y_train)
+xgb_preds = xgb_model.predict(X_test)
+Trains the XGBoost model
+
+Uses boosting — builds new trees that fix the mistakes of the previous ones
+
+📌 Internally:
+
+Handles overfitting well with regularization
+
+Very fast and accurate
+
+📊 Evaluation (Same for all models)
+
+rf_acc = accuracy_score(y_test, rf_preds)
+rf_f1 = f1_score(y_test, rf_preds, average='weighted')
+Repeat for svm_preds, knn_preds, and xgb_preds.
+
+accuracy_score: % of correct predictions
+
+f1_score: balance of precision and recall, especially good for imbalanced classes
+
+📋 Final Output
+
+print("Random Forest Accuracy:", rf_acc, "F1 Score:", rf_f1)
+print("SVM Accuracy:", svm_acc, "F1 Score:", svm_f1)
+print("KNN Accuracy:", knn_acc, "F1 Score:", knn_f1)
+print("XGBoost Accuracy:", xgb_acc, "F1 Score:", xgb_f1)
+Compares the performance of all 4 models
+
+You can then decide which is best for your final report or deployment
+
